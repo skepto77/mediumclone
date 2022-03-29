@@ -15,11 +15,11 @@ export class AuthMiddlware implements NestMiddleware {
   async use(req: IExpressRequest, res: Response, next) {
     if (!req.headers.authorization) {
       req.user = null;
-      return;
       next();
+      return;
     }
     const token = req.headers.authorization.split(' ')[1];
-    console.log(token, 'token');
+
     try {
       const decode = verify(
         token,
@@ -30,7 +30,6 @@ export class AuthMiddlware implements NestMiddleware {
       req.user = user;
     } catch (err) {
       req.user = null;
-      return;
     }
     next();
   }
